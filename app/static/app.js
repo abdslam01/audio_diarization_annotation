@@ -44,24 +44,15 @@ document.addEventListener('DOMContentLoaded', function () {
     wavesurfer = WaveSurfer.create(options);
     wavesurfer.load('/audio/' + audio_name);
 
-    // load peak of backend generated
-    // wavesurfer.util
-    //     .fetchFile({
-    //         responseType: 'json',
-    //         url: 'rashomon.json'
-    //     })
-    //     .on('success', function (data) {
-    //         wavesurfer.load(
-    //             '../media/msw001_03_rashomon_akutagawa_mt_64kb.mp3',
-    //             data
-    //         );
-    //     });
+    wavesurfer.on('seek', function () {
+        console.log('seek', wavesurferGetCurrentTimeRound());
+    });
 
     /* Regions */
     wavesurfer.on('ready', function () {
-        // wavesurfer.enableDragSelection({
-        //     color: randomColor(0.6)
-        // });
+        wavesurfer.enableDragSelection({
+            color: randomColor(0.6)
+        });
 
         wavesurfer.util
             .ajax({
@@ -346,6 +337,7 @@ function selectElement(id, valueToSelect) {
  * Edit app for a region.
  */
 function editAnnotation(region) {
+    console.log(region, 'editAnnotationfunction');
     var form = document.forms.edit;
     form.style.opacity = 1;
     (form.elements.start.value = Math.round(region.start * 10) / 10),
@@ -421,5 +413,5 @@ function getUrlVars() {
 }
 
 function wavesurferGetCurrentTimeRound() {
-    return wavesurfer.getCurrentTime().toFixed(2);
+    return wavesurfer.getCurrentTime().toFixed(4);
 }
